@@ -1,8 +1,4 @@
-import AboutUs from "./modules/AboutUs/AboutUs";
-import GreeteBlock from "./modules/GreeteBlock/GreeteBlock";
-import Products from "./modules/Products/Products";
 import placeholder from "@/public/assets/placeholder.png";
-import SourceCode from "./modules/SourceCode/SourceCode";
 
 const catalogData = [
   {
@@ -104,16 +100,12 @@ const catalogData = [
   },
 ];
 
-export default function Home() {
-  return (
-    <div>
-      <GreeteBlock />
-      <Products categories={catalogData} />
-      <AboutUs />
-      <SourceCode link="https://codeberg.org/org/Olmi/dashboard" />
-      <button className="block mx-auto text-2xl lg:text-4xl py-3 lg:py-6 px-6 lg:px-12 bg-[#23254B] font-black rounded-2xl lg:rounded-4xl text-white mt-16 hover:scale-105 transition-all cursor-pointer hover:opacity-80 active:scale-95">
-        Поддержать проект
-      </button>
-    </div>
-  );
+export function getProductByModel(modelName: string) {
+  for (const category of catalogData) {
+    const product = category.products.find(
+      (p) => p.model.toLowerCase() === modelName.toLowerCase(),
+    );
+    if (product) return product;
+  }
+  return null;
 }

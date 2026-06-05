@@ -8,12 +8,12 @@ interface BuyButtonProps {
 
 const BuyButton = ({ model, label }: BuyButtonProps) => {
   return (
-    <button className="relative flex items-center justify-center w-full p-2.5 lg:p-3 bg-[#23254B] text-white font-black rounded-2xl text-xl lg:text-2xl cursor-pointer hover:bg-[#5155A1] transition-all active:scale-90">
-      <div className="absolute left-3 flex items-center">
-        <Image src={buy} alt="buy" className="w-5 lg:w-auto" />
+    <button className="flex items-center w-full px-3 py-3 lg:p-3 bg-[#23254B] text-white font-black rounded-2xl text-xl lg:text-2xl cursor-pointer hover:bg-[#5155A1] transition-all active:scale-90">
+      <div className="flex-shrink-0 mr-3">
+        <Image src={buy} alt="buy" className="w-5 lg:w-7" />
       </div>
 
-      <span className="text-center">{label}</span>
+      <span className="flex-1 text-center pr-8">{label}</span>
     </button>
   );
 };

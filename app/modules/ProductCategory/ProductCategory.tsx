@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import ProductCard from "../ProductCard/ProductCard";
+import { motion, Variants } from "framer-motion";
 
 interface ProductItem {
   id: number | string;
@@ -13,8 +14,23 @@ interface ProductItem {
 interface ProductCategoryProps {
   title: string;
   products: ProductItem[];
-  mobileCols: 1 | 2; // Добавили тип для пропа
+  mobileCols: 1 | 2;
 }
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
 
 const ProductCategory = ({
   title,
@@ -54,37 +70,51 @@ const ProductCategory = ({
         className="absolute top-0 left-0 right-0 h-px pointer-events-none"
       />
 
-      <h1
+      <motion.h1
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.5 }}
         className={`
         text-[#9C6B30] text-5xl font-black
         sticky top-0 z-10 py-6 transition-colors duration-200
-
         -mx-4 px-4
-
         ${isSticky ? "bg-white shadow-md" : "bg-transparent"}
-
         md:static md:bg-transparent md:py-0 md:z-auto md:mx-0 md:px-0
         md:text-3xl lg:text-4xl
         md:shadow-none
       `}
       >
         {title}
-      </h1>
+      </motion.h1>
 
-      <div
+      <motion.div
+        layout
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "100px" }}
         className={`w-full grid gap-4 md:gap-6 ${
           mobileCols === 1 ? "grid-cols-1" : "grid-cols-2"
         } md:grid-cols-[repeat(auto-fill,minmax(260px,1fr))]`}
       >
         {products.map((product) => (
-          <ProductCard
+          <motion.div
             key={product.id}
-            model={product.model}
-            preview={product.preview}
-            price={product.price}
-          />
+            variants={itemVariants}
+            layout
+            transition={{
+              layout: { type: "spring", stiffness: 250, damping: 25 },
+            }}
+          >
+            <ProductCard
+              model={product.model}
+              preview={product.preview}
+              price={product.price}
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 };
